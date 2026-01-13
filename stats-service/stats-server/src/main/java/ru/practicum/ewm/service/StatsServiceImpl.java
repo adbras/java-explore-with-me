@@ -5,8 +5,8 @@ import ru.practicum.statsServer.mapper.EndpointHitMapper;
 import ru.practicum.statsServer.model.EndpointHit;
 import org.springframework.stereotype.Service;
 import ru.practicum.statsServer.repository.StatsRepository;
-import ru.practicum.statsDto.dto.EndpointHitDto;
-import ru.practicum.statsDto.dto.ViewStats;
+import ru.practicum.ewm.dto.EndpointHitDto;
+import ru.practicum.ewm.dto.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.List;
