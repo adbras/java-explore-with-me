@@ -1,4 +1,4 @@
-package ru.practicum.statsServer.controller;
+package ru.practicum.ewm.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.ViewStats;
-import ru.practicum.statsServer.service.StatsService;
+import ru.practicum.ewm.service.StatsService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

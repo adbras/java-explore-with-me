@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import ru.practicum.statsServer.dto.EndpointHitDto;
-import ru.practicum.statsServer.dto.ViewStats;
+import ru.practicum.ewm.dto.EndpointHitDto;
+import ru.practicum.ewm.dto.ViewStats;
 
 import java.util.List;
 
