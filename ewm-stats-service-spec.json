@@ -144,7 +144,7 @@
           }
         }
       },
-      "ViewStats": {
+      "ViewStatsDto": {
         "type": "object",
         "properties": {
           "app": {

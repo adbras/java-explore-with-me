@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.EndpointHitDto;
-import ru.practicum.ewm.dto.ViewStatsDto;
+import ru.practicum.ewm.dto.ViewStats;
 import ru.practicum.ewm.service.StatsService;
 
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public List<ViewStatsDto> getStats(
+    public List<ViewStats> getStats(
             @RequestParam LocalDateTime start,
             @RequestParam LocalDateTime end,
             @RequestParam(required = false) List<String> uris,

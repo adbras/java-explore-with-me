@@ -141,10 +141,10 @@ public class PrivateEventService {
                 .unique(true)
                 .build();
 
-        List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
+        List<ViewStats> stats = statsClient.getStats(List.of(statsRequestDto));
 
         Map<String, Long> viewsMap = stats.stream()
-                .collect(Collectors.toMap(ViewStatsDto::getUri, ViewStatsDto::getHits));
+                .collect(Collectors.toMap(ViewStats::getUri, ViewStats::getHits));
 
         return events.stream()
                 .map(event -> {
@@ -168,7 +168,7 @@ public class PrivateEventService {
                 .uris(Set.of("/events/" + eventId))
                 .unique(true)
                 .build();
-        List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
+        List<ViewStats> stats = statsClient.getStats(List.of(statsRequestDto));
         eventFullDto.setViews(stats.isEmpty() ? 0L : stats.getFirst().getHits());
         return eventFullDto;
     }

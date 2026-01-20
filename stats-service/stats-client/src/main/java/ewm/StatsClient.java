@@ -8,7 +8,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.StatsRequestDto;
-import ru.practicum.ewm.dto.ViewStatsDto;
+import ru.practicum.ewm.dto.ViewStats;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,11 +31,11 @@ public class StatsClient {
                 .toBodilessEntity();
     }
 
-    public List<ViewStatsDto> getStats(List<StatsRequestDto> statsRequestDtos) {
-        List<ViewStatsDto> allStats = new ArrayList<>();
+    public List<ViewStats> getStats(List<StatsRequestDto> statsRequestDtos) {
+        List<ViewStats> allStats = new ArrayList<>();
         for (StatsRequestDto statsRequestDto : statsRequestDtos) {
             try {
-                List<ViewStatsDto> stats = restClient.get()
+                List<ViewStats> stats = restClient.get()
                         .uri(uriBuilder -> uriBuilder.path("/stats")
                                 .queryParam("start", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                                         .format(statsRequestDto.getStart()))

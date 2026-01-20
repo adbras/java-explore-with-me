@@ -11,7 +11,7 @@ import ru.practicum.ewm.StatsClient;
 import ru.practicum.ewm.dto.EventFullDto;
 import ru.practicum.ewm.dto.StatsRequestDto;
 import ru.practicum.ewm.dto.UpdateEventAdminDto;
-import ru.practicum.ewm.dto.ViewStatsDto;
+import ru.practicum.ewm.dto.ViewStats;
 import ru.practicum.ewm.enums.EventState;
 import ru.practicum.ewm.enums.RequestStatus;
 import ru.practicum.ewm.enums.StateAction;
@@ -75,7 +75,7 @@ public class AdminEventService {
                 .filter(e -> e.getPublishedOn() != null)
                 .collect(Collectors.toMap(e -> "/events/" + e.getId(), e -> e));
 
-        List<ViewStatsDto> stats = statsClient.getStats(
+        List<ViewStats> stats = statsClient.getStats(
                 uriToEventMap.entrySet().stream()
                         .map(entry -> StatsRequestDto.builder()
                                 .uris(Set.of(entry.getKey()))
@@ -87,7 +87,7 @@ public class AdminEventService {
         );
 
         Map<String, Long> viewsMap = stats.stream()
-                .collect(Collectors.toMap(ViewStatsDto::getUri, ViewStatsDto::getHits));
+                .collect(Collectors.toMap(ViewStats::getUri, ViewStats::getHits));
 
         return events.stream()
                 .map(event -> {
@@ -174,7 +174,7 @@ public class AdminEventService {
                     .unique(true)
                     .build();
 
-            List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
+            List<ViewStats> stats = statsClient.getStats(List.of(statsRequestDto));
             dto.setViews(stats.isEmpty() ? 0L : stats.getFirst().getHits());
         } else {
             dto.setViews(0L);
