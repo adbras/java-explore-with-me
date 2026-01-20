@@ -2,10 +2,9 @@ package ru.practicum.ewm.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.EventFullDto;
-import ru.practicum.ewm.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.dto.UpdateEventAdminDto;
 import ru.practicum.ewm.enums.EventState;
 import ru.practicum.ewm.service.AdminEventService;
 
@@ -23,8 +22,8 @@ public class AdminEventController {
             @RequestParam(required = false) List<Long> users,
             @RequestParam(required = false) List<EventState> states,
             @RequestParam(required = false) List<Long> categories,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+            @RequestParam(required = false) LocalDateTime rangeStart,
+            @RequestParam(required = false) LocalDateTime rangeEnd,
             @RequestParam(defaultValue = "0") int from,
             @RequestParam(defaultValue = "10") int size) {
         return adminEventService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
@@ -33,7 +32,7 @@ public class AdminEventController {
     @PatchMapping("/{eventId}")
     public EventFullDto updateEvent(
             @PathVariable Long eventId,
-            @Valid @RequestBody UpdateEventAdminRequest updateRequest) {
+            @Valid @RequestBody UpdateEventAdminDto updateRequest) {
 
         return adminEventService.updateEvent(eventId, updateRequest);
     }

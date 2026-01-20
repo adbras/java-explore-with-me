@@ -66,7 +66,7 @@ public class PrivateEventService {
     }
 
     @Transactional
-    public EventFullDto updateEvent(Long userId, Long eventId, UpdateEventUserRequest updateRequest) {
+    public EventFullDto updateEvent(Long userId, Long eventId, UpdateEventUserDto updateRequest) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ValidationException("Событие с id " + eventId + " не найдено",
                         HttpStatus.NOT_FOUND));
@@ -136,15 +136,15 @@ public class PrivateEventService {
         Map<String, Event> uriToEventMap = events.stream()
                 .collect(Collectors.toMap(e -> "/events/" + e.getId(), e -> e));
 
-        StatsRequest statsRequest = StatsRequest.builder()
+        StatsRequestDto statsRequestDto = StatsRequestDto.builder()
                 .uris(uriToEventMap.keySet())
                 .unique(true)
                 .build();
 
-        List<ViewStats> stats = statsClient.getStats(List.of(statsRequest));
+        List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
 
         Map<String, Long> viewsMap = stats.stream()
-                .collect(Collectors.toMap(ViewStats::getUri, ViewStats::getHits));
+                .collect(Collectors.toMap(ViewStatsDto::getUri, ViewStatsDto::getHits));
 
         return events.stream()
                 .map(event -> {
@@ -164,11 +164,11 @@ public class PrivateEventService {
         EventFullDto eventFullDto = eventMapper.toEventFullDto(event);
         eventFullDto.setConfirmedRequests(participationRequestRepository.countByEventAndStatus(eventId,
                 RequestStatus.CONFIRMED));
-        StatsRequest statsRequest = StatsRequest.builder()
+        StatsRequestDto statsRequestDto = StatsRequestDto.builder()
                 .uris(Set.of("/events/" + eventId))
                 .unique(true)
                 .build();
-        List<ViewStats> stats = statsClient.getStats(List.of(statsRequest));
+        List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
         eventFullDto.setViews(stats.isEmpty() ? 0L : stats.getFirst().getHits());
         return eventFullDto;
     }

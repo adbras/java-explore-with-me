@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
-import ru.practicum.ewm.dto.StatsRequest;
-import ru.practicum.ewm.dto.ViewStats;
+import ru.practicum.ewm.dto.StatsRequestDto;
+import ru.practicum.ewm.dto.ViewStatsDto;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,18 +31,18 @@ public class StatsClient {
                 .toBodilessEntity();
     }
 
-    public List<ViewStats> getStats(List<StatsRequest> statsRequests) {
-        List<ViewStats> allStats = new ArrayList<>();
-        for (StatsRequest statsRequest : statsRequests) {
+    public List<ViewStatsDto> getStats(List<StatsRequestDto> statsRequestDtos) {
+        List<ViewStatsDto> allStats = new ArrayList<>();
+        for (StatsRequestDto statsRequestDto : statsRequestDtos) {
             try {
-                List<ViewStats> stats = restClient.get()
+                List<ViewStatsDto> stats = restClient.get()
                         .uri(uriBuilder -> uriBuilder.path("/stats")
                                 .queryParam("start", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                                        .format(statsRequest.getStart()))
+                                        .format(statsRequestDto.getStart()))
                                 .queryParam("end", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                                        .format(statsRequest.getEnd()))
-                                .queryParam("uris", statsRequest.getUris())
-                                .queryParam("unique", statsRequest.isUnique())
+                                        .format(statsRequestDto.getEnd()))
+                                .queryParam("uris", statsRequestDto.getUris())
+                                .queryParam("unique", statsRequestDto.isUnique())
                                 .build())
                         .retrieve()
                         .body(new ParameterizedTypeReference<>() {

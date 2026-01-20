@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.dto.CompilationDto;
 import ru.practicum.ewm.dto.NewCompilationDto;
-import ru.practicum.ewm.dto.UpdateCompilationRequest;
+import ru.practicum.ewm.dto.UpdateCompilationDto;
 import ru.practicum.ewm.exception.ValidationException;
 import ru.practicum.ewm.mapper.CompilationMapper;
 import ru.practicum.ewm.model.Compilation;
@@ -82,7 +82,7 @@ public class CompilationService {
 
 
     @Transactional
-    public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest request) {
+    public CompilationDto updateCompilation(Long compId, UpdateCompilationDto request) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new ValidationException("Подборка с id=" + compId + " не найдена",
                         HttpStatus.NOT_FOUND));

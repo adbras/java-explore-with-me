@@ -1,34 +1,32 @@
 package ru.practicum.ewm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "compilations")
-@Data
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "compilation_id")
-    Long id;
+    private Long id;
 
-    boolean pinned;
+    private boolean pinned;
 
     @Column(name = "title", unique = true)
-    String title;
+    private String title;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "compilations_events",
             joinColumns = @JoinColumn(name = "compilation_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
-    Set<Event> events;
+    private Set<Event> events;
 }

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.dto.NewUserRequest;
+import ru.practicum.ewm.dto.NewUserDto;
 import ru.practicum.ewm.dto.UserDto;
 import ru.practicum.ewm.exception.ValidationException;
 import ru.practicum.ewm.mapper.UserMapper;
@@ -37,13 +37,13 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto registerUser(NewUserRequest newUserRequest) {
-        if (userRepository.existsByEmail(newUserRequest.getEmail())) {
-            throw new ValidationException("Пользователь с e-mail " + newUserRequest.getEmail() + " существует.",
+    public UserDto registerUser(NewUserDto newUserDto) {
+        if (userRepository.existsByEmail(newUserDto.getEmail())) {
+            throw new ValidationException("Пользователь с e-mail " + newUserDto.getEmail() + " существует.",
                     HttpStatus.CONFLICT);
         }
 
-        User user = userMapper.toUser(newUserRequest);
+        User user = userMapper.toUser(newUserDto);
         user = userRepository.save(user);
         return userMapper.toUserDto(user);
     }

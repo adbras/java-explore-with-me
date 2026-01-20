@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final EventRepository eventRepository;
 
-    @Transactional(readOnly = true)
     public List<CategoryDto> getCategories(int from, int size) {
         Pageable pageable = PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "id"));
         return categoryRepository.findAll(pageable).stream()
@@ -34,7 +34,6 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long catId) {
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new ValidationException("Категория id=" + catId + " не найдена",

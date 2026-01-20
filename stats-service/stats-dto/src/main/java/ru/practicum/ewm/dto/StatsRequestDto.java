@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class StatsRequest {
+public class StatsRequestDto {
     private Set<String> uris;
 
     @Builder.Default

@@ -1,7 +1,7 @@
 package ru.practicum.ewm.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.ewm.dto.NewUserRequest;
+import ru.practicum.ewm.dto.NewUserDto;
 import ru.practicum.ewm.dto.UserDto;
 import ru.practicum.ewm.dto.UserShortDto;
 import ru.practicum.ewm.model.User;
@@ -31,10 +31,10 @@ public class UserMapper {
                 .build();
     }
 
-    public User toUser(NewUserRequest newUserRequest) {
+    public User toUser(NewUserDto newUserDto) {
         return User.builder()
-                .name(newUserRequest.getName())
-                .email(newUserRequest.getEmail())
+                .name(newUserDto.getName())
+                .email(newUserDto.getEmail())
                 .build();
     }
 }

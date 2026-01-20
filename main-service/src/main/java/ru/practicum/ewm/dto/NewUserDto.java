@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class NewUserRequest {
+public class NewUserDto {
     @Email(message = "Email должен иметь формат адреса электронной почты")
     @NotBlank(message = "Email не должен быть пустым")
     @Size(min = 6, max = 254)

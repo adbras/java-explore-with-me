@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.StatsClient;
 import ru.practicum.ewm.dto.EventFullDto;
-import ru.practicum.ewm.dto.StatsRequest;
-import ru.practicum.ewm.dto.UpdateEventAdminRequest;
-import ru.practicum.ewm.dto.ViewStats;
+import ru.practicum.ewm.dto.StatsRequestDto;
+import ru.practicum.ewm.dto.UpdateEventAdminDto;
+import ru.practicum.ewm.dto.ViewStatsDto;
 import ru.practicum.ewm.enums.EventState;
 import ru.practicum.ewm.enums.RequestStatus;
 import ru.practicum.ewm.enums.StateAction;
@@ -75,9 +75,9 @@ public class AdminEventService {
                 .filter(e -> e.getPublishedOn() != null)
                 .collect(Collectors.toMap(e -> "/events/" + e.getId(), e -> e));
 
-        List<ViewStats> stats = statsClient.getStats(
+        List<ViewStatsDto> stats = statsClient.getStats(
                 uriToEventMap.entrySet().stream()
-                        .map(entry -> StatsRequest.builder()
+                        .map(entry -> StatsRequestDto.builder()
                                 .uris(Set.of(entry.getKey()))
                                 .start(entry.getValue().getPublishedOn())
                                 .end(LocalDateTime.now())
@@ -87,7 +87,7 @@ public class AdminEventService {
         );
 
         Map<String, Long> viewsMap = stats.stream()
-                .collect(Collectors.toMap(ViewStats::getUri, ViewStats::getHits));
+                .collect(Collectors.toMap(ViewStatsDto::getUri, ViewStatsDto::getHits));
 
         return events.stream()
                 .map(event -> {
@@ -110,7 +110,7 @@ public class AdminEventService {
     }
 
     @Transactional
-    public EventFullDto updateEvent(Long eventId, UpdateEventAdminRequest updateRequest) {
+    public EventFullDto updateEvent(Long eventId, UpdateEventAdminDto updateRequest) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ValidationException("Событие с id " + eventId + " не найдено",
                         HttpStatus.NOT_FOUND));
@@ -167,14 +167,14 @@ public class AdminEventService {
         dto.setConfirmedRequests(participationRequestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED));
 
         if (event.getPublishedOn() != null) {
-            StatsRequest statsRequest = StatsRequest.builder()
+            StatsRequestDto statsRequestDto = StatsRequestDto.builder()
                     .uris(Set.of("/events/" + eventId))
                     .start(event.getPublishedOn())
                     .end(LocalDateTime.now())
                     .unique(true)
                     .build();
 
-            List<ViewStats> stats = statsClient.getStats(List.of(statsRequest));
+            List<ViewStatsDto> stats = statsClient.getStats(List.of(statsRequestDto));
             dto.setViews(stats.isEmpty() ? 0L : stats.getFirst().getHits());
         } else {
             dto.setViews(0L);

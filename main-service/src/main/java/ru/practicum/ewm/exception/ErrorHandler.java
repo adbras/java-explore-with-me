@@ -21,6 +21,7 @@ public class ErrorHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleMissingRequestParam(MissingServletRequestParameterException e) {
+        log.error("Missing parameter: {}", e.getMessage(), e);
         return buildErrorResponse(
                 e,
                 HttpStatus.BAD_REQUEST,
@@ -31,6 +32,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ApiError> handleAppException(ValidationException e) {
+        log.error("Validation exception: status={}, message={}", e.getStatus(), e.getMessage());
         ApiError apiError = buildErrorResponse(
                 e,
                 e.getStatus(),
@@ -43,6 +45,7 @@ public class ErrorHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ApiError handleResponseStatusException(ResponseStatusException e) {
         HttpStatus status = HttpStatus.valueOf(e.getStatusCode().value());
+        log.error("Response status exception: status={}, reason={}", status, e.getReason());
         return buildErrorResponse(
                 e,
                 status,
@@ -53,6 +56,7 @@ public class ErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationExceptions(MethodArgumentNotValidException e) {
+        log.error("Method argument not valid: {}", e.getMessage());
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
@@ -62,6 +66,18 @@ public class ErrorHandler {
                 HttpStatus.BAD_REQUEST,
                 "Ошибка валидации",
                 errors.toString()
+        );
+    }
+
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleThrowable(Throwable e) {
+        log.error("Unhandled exception caught: ", e);
+        return buildErrorResponse(
+                new Exception(e),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                e.getMessage(),
+                "An unexpected error occurred on the server."
         );
     }
 

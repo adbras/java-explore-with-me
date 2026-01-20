@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.dto.NewUserRequest;
+import ru.practicum.ewm.dto.NewUserDto;
 import ru.practicum.ewm.dto.UserDto;
 import ru.practicum.ewm.service.UserService;
 
@@ -26,8 +26,8 @@ public class AdminUserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerUser(@Valid @RequestBody NewUserRequest newUserRequest) {
-        return userService.registerUser(newUserRequest);
+    public UserDto registerUser(@Valid @RequestBody NewUserDto newUserDto) {
+        return userService.registerUser(newUserDto);
     }
 
     @DeleteMapping("/{userId}")

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.dto.EventRequestStatusUpdateRequest;
-import ru.practicum.ewm.dto.EventRequestStatusUpdateResult;
+import ru.practicum.ewm.dto.EventRequestStatusUpdateDto;
+import ru.practicum.ewm.dto.EventRequestStatusUpdateResultDto;
 import ru.practicum.ewm.dto.ParticipationRequestDto;
 import ru.practicum.ewm.enums.EventState;
 import ru.practicum.ewm.enums.RequestStatus;
@@ -76,8 +76,8 @@ public class ParticipationRequestService {
     }
 
     @Transactional
-    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
-                                                              EventRequestStatusUpdateRequest request) {
+    public EventRequestStatusUpdateResultDto updateRequestStatus(Long userId, Long eventId,
+                                                                 EventRequestStatusUpdateDto request) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ValidationException("Событие с id " + eventId + " не найдено",
                         HttpStatus.NOT_FOUND));
@@ -123,7 +123,7 @@ public class ParticipationRequestService {
 
         participationRequestRepository.saveAll(requests);
 
-        return new EventRequestStatusUpdateResult(
+        return new EventRequestStatusUpdateResultDto(
                 participationRequestMapper.toParticipationRequestDtoList(confirmed),
                 participationRequestMapper.toParticipationRequestDtoList(rejected)
         );

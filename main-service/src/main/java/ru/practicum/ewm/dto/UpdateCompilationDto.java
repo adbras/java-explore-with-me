@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UpdateCompilationRequest {
+public class UpdateCompilationDto {
     @Size(min = 1, max = 50)
     private String title;
 
