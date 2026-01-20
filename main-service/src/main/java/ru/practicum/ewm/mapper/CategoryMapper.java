@@ -12,7 +12,6 @@ public interface CategoryMapper {
 
     Category toCategory(CategoryDto categoryDto);
 
-    // Поле id будет игнорироваться, так как его нет в NewCategoryDto
     @Mapping(target = "id", ignore = true)
     Category toCategory(NewCategoryDto newCategoryDto);
 }
