@@ -1,7 +1,6 @@
 package ru.practicum.ewm.repository;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import ru.practicum.ewm.model.EndpointHit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +9,6 @@ import ru.practicum.ewm.dto.ViewStats;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
 public interface StatsRepository extends JpaRepository<EndpointHit, Long> {
 
     @Query("select new ru.practicum.ewm.dto.ViewStats(eh.app, eh.uri, count(eh)) " +
