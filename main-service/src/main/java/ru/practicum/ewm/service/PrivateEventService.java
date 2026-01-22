@@ -180,7 +180,7 @@ public class PrivateEventService {
     }
 
     @Transactional(readOnly = true)
-    private Map<Long, Long> getconfirmedRequestsMap(List<Event> events) {
+    protected Map<Long, Long> getconfirmedRequestsMap(List<Event> events) {
         List<Long> eventIds = events.stream().map(Event::getId).toList();
 
         return participationRequestRepository
